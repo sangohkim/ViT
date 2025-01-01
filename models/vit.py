@@ -39,11 +39,18 @@ class PositionalEncoding(nn.Module):
     def __init__(self, args: ArgumentParser) -> None:
         super().__init__()
         
-        self.pos_enc = nn.Parameter(torch.randn(1, args.img_size // args.psize, args.psize ** 2 * args.csize))
+        self.class_token = nn.Parameter(torch.randn(args.dsize))  # [CLASS] token
+        self.seq_len = args.img_size // args.psize
+        self.pos_enc = nn.Parameter(torch.randn(self.seq_len + 1, args.dsize))
     
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        ...
-        return x
+        if self.seq_len != x.shape[1]:
+            raise NotImplementedError('Proper interpolation is not implemented yet')
+        
+        prepended_x = torch.cat([self.class_token.unsqueeze(0).repeat(x.shape[0], 1).unsqueeze(1), x], dim=1)
+        out = prepended_x + self.pos_enc
+
+        return out
     
     
 class MLPHead(nn.Module):
@@ -58,3 +65,8 @@ class MLPHead(nn.Module):
         out = self.softmax(out)
 
         return out
+    
+
+if __name__ == '__main__':
+    # Below is just for testing
+    ...
