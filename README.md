@@ -1,8 +1,10 @@
 # ViT
 
-Implementation of ViT-S/32. This model is pretrained on Tiny ImageNet.
+Implementation of ViT-S/8. This model is pretrained on Tiny ImageNet.
+Since Tiny ImageNet is small and this repository is for my personal study, I'll only conduct pretraining.
 
-## ViT-S/32 Model Configuration
+## ViT-S/8 Model Configuration
+- Driven from [here](https://github.com/google-research/vision_transformer/blob/main/vit_jax/configs/models.py#L95)
 - Transformer's latent vector size: 384
 - Self-Attention Module
   - num_heads: 6
@@ -24,7 +26,7 @@ The brief configuration of Tiny ImageNet is given below.
 - Validation set: 50 per class (10000 in total)
 
 Since test labels are not given, I'll treat validation set as test set. 
-For validation set, I'll additionally randomly sample 10 images per class from the training set (5000 images for validation set in total).
+For validation set, I'll randomly sample 10 images per class from the training set (5000 images for validation set in total).
 - training: 98000
 - validation: 2000
 - test: 10000
@@ -33,4 +35,12 @@ To download Tiny ImageNet, execute the commands below.
 ```
 wget http://cs231n.stanford.edu/tiny-imagenet-200.zip
 unzip tiny-imagenet-200.zip
+```
+
+### 2. Refine the dataset structure
+
+For the sake of implementation, I refined the given Tiny ImageNet structure. To do that, execute the commands below.
+```
+cd {YOUR_PATH}/ViT/raw-datasets/tiny-imagenet-200
+python train_valid_split.py
 ```

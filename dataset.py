@@ -9,7 +9,7 @@ from typing import Tuple
 
 
 class PreTrainingDataset(Dataset):
-    def __init__(self, data_path: str, annotation_file_name: str, random_state: int = 42):
+    def __init__(self, data_path: str, annotation_file_name: str, random_state: int = 42) -> None:
         self.data_path = data_path
         self.image_names = os.listdir(f'{data_path}/images')
 
@@ -37,7 +37,7 @@ class PreTrainingDataset(Dataset):
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         ])
     
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.image_names)
     
     def __getitem__(self, idx: int) -> Tuple[torch.Tensor, int]:
