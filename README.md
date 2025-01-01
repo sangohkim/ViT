@@ -1,7 +1,8 @@
 # ViT
 
 Implementation of ViT-S/8. This model is pretrained on Tiny ImageNet.
-Since Tiny ImageNet is small and this repository is for my personal study, I'll only conduct pretraining.
+Since Tiny ImageNet is small that it doesn't need finetuning
+and this repository is for my personal study, I'll only conduct pretraining with downsized hyperparameters and model.
 
 ## ViT-S/8 Model Configuration
 - Driven from [here](https://github.com/google-research/vision_transformer/blob/main/vit_jax/configs/models.py#L95)
