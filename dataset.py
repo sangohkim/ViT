@@ -32,8 +32,8 @@ class PreTrainingDataset(Dataset):
             self.slabel_to_nlabel[label] = i
 
         self.transforms = transforms.Compose([
-            transforms.ToTensor(),
             transforms.Resize((64, 64)),
+            transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
         ])
     
@@ -44,7 +44,7 @@ class PreTrainingDataset(Dataset):
         image_name = self.image_names[idx]
         label = self.slabel_to_nlabel[self.name_to_slabel[image_name]]
 
-        image = Image.open(f'{self.data_path}/images/{image_name}')
+        image = Image.open(f'{self.data_path}/images/{image_name}').convert('RGB')
         image = self.transforms(image)
 
         return image, label
