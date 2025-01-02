@@ -3,4 +3,6 @@ raw-datasets/tiny-imagenet-200/train_val
 raw-datasets/tiny-imagenet-200/val
 raw-datasets/tiny-imagenet-200/test
 
+models/checkpoints/
+
 .DS_Store
