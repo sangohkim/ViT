@@ -17,6 +17,10 @@ if __name__ == '__main__':
     parser.add_argument('--drop', type=float, default=0.0, help='Dropout rate used in the MLP of TransformerEncoderLayer')
     parser.add_argument('--num_classes', type=float, default=200)
 
+    args = parser.parse_args()
+
+    assert args.dsize % args.num_heads == 0, 'dsize should be divisible by num_heads'
+
     train_dataset = PreTrainingDataset(data_path='raw-datasets/tiny-imagenet-200/train', annotation_file_name='train_annotations.txt')
     val_dataset = PreTrainingDataset(data_path='raw-datasets/tiny-imagenet-200/train_val', annotation_file_name='train_val_annotations.txt')
     test_dataset = PreTrainingDataset(data_path='raw-datasets/tiny-imagenet-200/val', annotation_file_name='val_annotations.txt')

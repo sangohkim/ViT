@@ -15,7 +15,7 @@ class ViT(nn.Module):
     
     def forward(self, x):
         out = self.vitencoder(x)
-        out = self.mlphead(out)
+        out = self.mlphead(out[:, 0])
         return out
 
 
@@ -28,11 +28,11 @@ class ViTEncoder(nn.Module):
         self.tfenc = TransformerEncoder(args)
     
     def forward(self, x):
-        out = self.pos_enc(x)
-        out = self.proj(out)
+        out = self.proj(x)
+        out = self.pos_enc(out)
         out = self.tfenc(out)
 
-        return x
+        return out
 
 
 class PositionalEncoding(nn.Module):
@@ -40,7 +40,7 @@ class PositionalEncoding(nn.Module):
         super().__init__()
         
         self.class_token = nn.Parameter(torch.randn(args.dsize))  # [CLASS] token
-        self.seq_len = args.img_size // args.psize
+        self.seq_len = (args.img_size // args.patch_size) ** 2
         self.pos_enc = nn.Parameter(torch.randn(self.seq_len + 1, args.dsize))
     
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -67,6 +67,21 @@ class MLPHead(nn.Module):
         return out
     
 
+# This is just for test
 if __name__ == '__main__':
-    # Below is just for testing
-    ...
+    x = torch.randn(32, 64, 3 * 8 * 8)
+    args = ArgumentParser()
+    args.patch_size = 8
+    args.img_size = 64
+    args.csize = 3
+    args.dsize = 384
+    args.num_layers = 5
+    args.num_heads = 6
+    args.dff = 1536
+    args.attn_drop = 0.0
+    args.drop = 0.0
+    args.num_classes = 200
+
+    vit = ViT(args)
+    out = vit(x)
+    print(out.shape)  # Should be torch.Size([32, args.num_classes])
